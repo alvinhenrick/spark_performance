@@ -89,7 +89,7 @@ schema = StructType([
 
 
 @udf(returnType=schema)
-def start_expansion_udf(x):
+def star_expansion_udf(x):
     """
     Start expansion test UDF. Multiple invocation
     :param x:
@@ -98,4 +98,4 @@ def start_expansion_udf(x):
     return star_expansion(x)
 
 
-start_expansion_fix_udf = udf(lambda s: star_expansion(s), schema).asNondeterministic()
+star_expansion_fix_udf = udf(lambda s: star_expansion(s), schema).asNondeterministic()

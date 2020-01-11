@@ -18,11 +18,19 @@ from pyspark.sql.functions import col, lit
                              )
 
                          ])
-def test_with_select(spark_session: SparkSession, input_data):
+def test_with_column(spark_session: SparkSession, input_data):
+    """
+    This seems to be faster during testing but it causes issues during run time with large dataset.
+    Parsing and Analysing the DAG on every add column
+    :param spark_session:
+    :param input_data:
+    :return:
+    """
     df = spark_session.createDataFrame(input_data)
 
-    new_columns = [lit(None).alias(f"test_{x}") for x in range(100)]
-    out_df = df.select([col("*")] + new_columns)
+    out_df = df
+    for x in range(100):
+        out_df = out_df.withColumn(f"test_{x}", lit(None))
 
     out_df.explain(extended=True)
 
@@ -43,12 +51,17 @@ def test_with_select(spark_session: SparkSession, input_data):
                              )
 
                          ])
-def test_with_column(spark_session: SparkSession, input_data):
+def test_with_select(spark_session: SparkSession, input_data):
+    """
+    This seems to be slower during testing but it avoid Parsing and Analysing the DAG on every add column
+    :param spark_session:
+    :param input_data:
+    :return:
+    """
     df = spark_session.createDataFrame(input_data)
 
-    out_df = df
-    for x in range(100):
-        out_df = out_df.withColumn(f"test_{x}", lit(None))
+    new_columns = [lit(None).alias(f"test_{x}") for x in range(100)]
+    out_df = df.select([col("*")] + new_columns)
 
     out_df.explain(extended=True)
 

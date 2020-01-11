@@ -22,6 +22,12 @@ from custom.udf.utils import first_word_udf, first_word_fix_udf
 
                          ])
 def test_udf_call_with_filter(spark_session, input_data):
+    """
+    Filter operation preceding UDF invocation. Invokes UDF multiple times at different stages in DAG
+    :param spark_session:
+    :param input_data:
+    :return:
+    """
     df = spark_session.createDataFrame(input_data)
     df = df.withColumn('word', first_word_udf('input_col'))
     df = df.filter("word is not null")
@@ -48,6 +54,12 @@ def test_udf_call_with_filter(spark_session, input_data):
 
                          ])
 def test_udf_call_with_filter_fix(spark_session, input_data):
+    """
+    Mark the UDF as asNondeterministic to resolve the issue
+    :param spark_session:
+    :param input_data:
+    :return:
+    """
     df = spark_session.createDataFrame(input_data)
     df = df.withColumn('word2', first_word_fix_udf('input_col'))
     df = df.filter("word2 is not null")
