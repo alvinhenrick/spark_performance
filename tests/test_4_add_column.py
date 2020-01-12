@@ -20,7 +20,7 @@ from pyspark.sql.functions import col, lit
                          ])
 def test_with_column(spark_session: SparkSession, input_data):
     """
-    This seems to be faster during testing but it causes issues during run time with large dataset.
+    This seems to be slower because and it causes issues during run time with large dataset.
     Parsing and Analysing the DAG on every add column
     :param spark_session:
     :param input_data:
@@ -53,7 +53,7 @@ def test_with_column(spark_session: SparkSession, input_data):
                          ])
 def test_with_select(spark_session: SparkSession, input_data):
     """
-    This seems to be slower during testing but it avoid Parsing and Analysing the DAG on every add column
+    This seems to be faster because it avoid Parsing and Analysing the DAG on every add column
     :param spark_session:
     :param input_data:
     :return:
